@@ -1,0 +1,43 @@
+.profile-container {
+  padding: 20px;
+
+  max-width: 600px;
+
+  margin: 20px auto;
+
+  background-color: #ffffff;
+
+  border-radius: 8px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-detail {
+  margin-bottom: 15px;
+
+  padding: 10px;
+
+  background-color: #f7f7f7;
+
+  border-radius: 4px;
+}
+
+.user-detail-label {
+  font-weight: bold;
+
+  color: #333;
+}
+
+.user-detail-value {
+  color: #666;
+
+  margin-left: 10px;
+}
+
+.loading-message {
+  text-align: center;
+
+  font-size: 16px;
+
+  color: #999;
+}

@@ -1,0 +1,15 @@
+.notfound-container {
+  display: "flex";
+  justify-content: center;
+  align-items: center;
+  margin-top: 130px;
+}
+
+.notfound-content {
+  text-align: center;
+}
+
+.notfound-text {
+  font-size: 44px;
+  color: "rgb(76, 124, 197)";
+}

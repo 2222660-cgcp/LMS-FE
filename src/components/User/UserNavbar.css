@@ -1,0 +1,12 @@
+.nav-bg {
+  background-color: #3498db;
+  color: white;
+}
+
+.dashboard {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 70px;
+  color: white;
+  cursor: default;
+}

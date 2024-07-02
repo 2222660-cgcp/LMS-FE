@@ -1,0 +1,15 @@
+.table-responsive {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #343a40;
+  z-index: 1;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}

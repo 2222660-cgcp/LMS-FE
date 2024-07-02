@@ -1,0 +1,34 @@
+
+/* 
+ .addbook-labels {
+    color: #333333;
+    font-family: Arial;
+}
+
+.button-btn {
+    background-color: #5cacee;
+    color: #333;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+}
+
+.button-btn:hover {
+   background-color: #4682b4;
+   color: white;
+} */
+
+
+.addbook-body-bg {
+    background-color: #f5f5f5;
+    height: 530px;
+}
+
+.addbookSuccessMsg {
+    color: rgb(101, 172, 101);
+}
+
+/* .input-small {
+    max-width: 250px;
+} */
+

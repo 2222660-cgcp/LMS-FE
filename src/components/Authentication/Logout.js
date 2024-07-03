@@ -5,6 +5,7 @@ const Logout = () => {
   localStorage.removeItem("email");
   localStorage.removeItem("role");
   localStorage.removeItem("username");
+  sessionStorage.clear();
   return (
     <>
       <Signup />

@@ -22,43 +22,43 @@ const AddBook = () => {
 
   const token = localStorage.getItem("token");
 
-  // useEffect(() => {
-  //   if (token && categoryId) {
-  //     fetch(`http://localhost:8082/category/${categoryId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setCategoryData(data);
-  //         console.log(categoryData);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error in category data:", error);
-  //         setMessage("Category doesn't exist");
-  //       });
-  //   }
-  // }, [token, categoryId]);
+  useEffect(() => {
+    if (token && categoryId) {
+      fetch(`http://localhost:8082/category/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setCategoryData(data);
+          console.log(categoryData);
+        })
+        .catch((error) => {
+          console.error("Error in category data:", error);
+          setMessage("Category doesn't exist");
+        });
+    }
+  }, [token, categoryId]);
 
-  // useEffect(() => {
-  //   if (token && authorId) {
-  //     fetch(`http://localhost:8083/author/${authorId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setAuthorData(data);
-  //         console.log(authorData);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error in author data:", error);
-  //         setMessage("Author doesn't exist");
-  //       });
-  //   }
-  // }, [token, authorId]);
+  useEffect(() => {
+    if (token && authorId) {
+      fetch(`http://localhost:8083/author/${authorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setAuthorData(data);
+          console.log(authorData);
+        })
+        .catch((error) => {
+          console.error("Error in author data:", error);
+          setMessage("Author doesn't exist");
+        });
+    }
+  }, [token, authorId]);
 
   const handleAddBook = async (e) => {
     e.preventDefault();
@@ -82,47 +82,46 @@ const AddBook = () => {
       (categoryId === "")
     ) {
       setErrorMessage("All fileds are required");
-    }
-    //  else if (message === "Author doesn't exist") {
-    //   setErrorMessage("Author doesn't exist");
-    // } else if (message === "Category doesn't exist") {
-    //   setErrorMessage("Category doesn't exist");
-    // } else {
-    try {
-      const response = await axios.post(
-        "http://localhost:8081/book",
-        addBookInput,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Book added", response.data);
+    } else if (message === "Author doesn't exist") {
+      setErrorMessage("Author doesn't exist");
+    } else if (message === "Category doesn't exist") {
+      setErrorMessage("Category doesn't exist");
+    } else {
+      try {
+        const response = await axios.post(
+          "http://localhost:8081/book",
+          addBookInput,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Book added", response.data);
 
-      setBookName("");
-      setBookNo("");
-      setBookPrice("");
-      setAuthorId("");
-      setCategoryId("");
-      setIsSeccess(true);
-      setMessage("Book added successfuly");
-    } catch (error) {
-      console.error("error adding book", error);
-      setIsSeccess(false);
-      setMessage("Failed to add book, author or category doesnt exist");
-    } finally {
-      setShowCard(true);
+        setBookName("");
+        setBookNo("");
+        setBookPrice("");
+        setAuthorId("");
+        setCategoryId("");
+        setIsSeccess(true);
+        setMessage("Book added successfuly");
+      } catch (error) {
+        console.error("error adding book", error);
+        setIsSeccess(false);
+        setMessage("Failed to add book, author or category doesnt exist");
+      } finally {
+        setShowCard(true);
+      }
     }
-    // }
   };
 
-  const handleInputChange = () => {
-    setErrorMessage("");
-  };
+  const handleInputChange = () => {};
 
   const handleClose = () => {
     setShowCard(false);
+    setMessage("");
+    setErrorMessage("");
   };
 
   return (

@@ -28,6 +28,7 @@ const AdminLogin = () => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("role", response.data.role);
+
           if (response.data.role === "ADMIN") {
             navigate("/admin-dashboard");
           } else {

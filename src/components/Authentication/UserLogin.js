@@ -32,6 +32,7 @@ const UserLogin = () => {
 
           if (response.data.role === "USER") {
             navigate("/user-dashboard");
+            window.location.reload();
           } else {
             setErrorMessage(
               "Role not allowed. Only Reader can login through this page."

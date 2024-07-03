@@ -16,7 +16,6 @@ const UpdateUser = () => {
   const [phone, setPhoneNumber] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || "");
   const navigate = useNavigate();
-  console.log("indide form" + phone);
 
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -36,7 +35,6 @@ const UpdateUser = () => {
     );
     if (confirmed) {
       e.preventDefault();
-      console.log("indide form");
       try {
         const response = await axios.put(
           `http://localhost:8080/update-user/${username}`,
@@ -54,7 +52,6 @@ const UpdateUser = () => {
             },
           }
         );
-        console.log("inside form" + username);
         console.log("User updated:", response.data);
         setUser({ username, firstname, lastname, email, phone, address });
 

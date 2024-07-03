@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Signup from "./Authentication/Signup";
 import UserLogin from "./Authentication/UserLogin";
@@ -56,6 +56,7 @@ const MainRoutes = () => {
         <Route path="/login" element={<UserLogin />} />
         <Route path="admin-login" element={<AdminLogin />} />
         <Route path="/logout" element={<Logout />} />
+
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route
           path="/admin-dashboard/registered-users"
@@ -120,6 +121,7 @@ const MainRoutes = () => {
           element={<ReservedBook />}
         />
         <Route path="/user-dashboard/feedback" element={<Feedback />} />
+
         <Route path="*" element={<Signup />} />
       </Routes>
     </div>

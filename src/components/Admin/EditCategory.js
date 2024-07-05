@@ -15,11 +15,11 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const categoryid = location.state && location.state.categoryId;
   const [categoryName, setCategoryName] = useState("");
+  const [initialCategoryName, setInitialCategoryName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isSuccess, setIsSeccess] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
   const [showCard, setShowCard] = useState(false);
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const EditCategory = () => {
         .then((response) => response.json())
         .then((category) => {
           setCategoryName(category.categoryName);
+          setInitialCategoryName(category.categoryName);
           console.log("category : ", category);
         })
         .catch((error) => {
@@ -42,16 +43,19 @@ const EditCategory = () => {
 
   const handleEditCategory = async (e) => {
     e.preventDefault();
-    setIsSeccess(null);
+    setIsSuccess(null);
     setMessage("");
     setShowCard(false);
-    const categoryData = {
-      categoryName: categoryName,
-    };
-    console.log(categoryData);
+
     if (categoryName === "") {
       setErrorMessage("All fields are required");
+    } else if (categoryName === initialCategoryName) {
+      setErrorMessage("No changes detected");
     } else {
+      const categoryData = {
+        categoryName: categoryName,
+      };
+      console.log(categoryData);
       try {
         if (token) {
           const response = await axios.put(
@@ -64,21 +68,20 @@ const EditCategory = () => {
             }
           );
           console.log("category updated", response.data);
-          setCategoryName(categoryName);
-
-          setIsSeccess(true);
-          setMessage("Category updated successfuly");
+          setIsSuccess(true);
+          setMessage("Category updated successfully");
         }
       } catch (error) {
         console.error("error updating category", error);
-        setErrorMessage("error ! try again");
-        setIsSeccess(false);
+        setErrorMessage("Error! Try again");
+        setIsSuccess(false);
         setMessage("Failed to update category");
       } finally {
         setShowCard(true);
       }
     }
   };
+
   const handleInputChange = () => {
     setErrorMessage("");
   };
@@ -87,6 +90,7 @@ const EditCategory = () => {
     setShowCard(false);
     navigate("/admin-dashboard/manage-category");
   };
+
   return (
     <>
       <AdminNavbar />

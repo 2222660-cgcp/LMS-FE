@@ -17,9 +17,12 @@ const UpdateUser = () => {
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhoneNumber] = useState(user?.phone || "");
   const [address, setAddress] = useState(user?.address || "");
+  const [initialUserDetails, setInitialUserDetails] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     if (user) {
       setUsername(user.username);
@@ -28,15 +31,30 @@ const UpdateUser = () => {
       setEmail(user.email);
       setPhoneNumber(user.phone);
       setAddress(user.address);
+      setInitialUserDetails(user);
     }
   }, [user]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    if (
+      username === initialUserDetails.username &&
+      firstname === initialUserDetails.firstname &&
+      lastname === initialUserDetails.lastname &&
+      email === initialUserDetails.email &&
+      phone === initialUserDetails.phone &&
+      address === initialUserDetails.address
+    ) {
+      setErrorMessage("No changes detected");
+      return;
+    }
+
     const confirmed = window.confirm(
-      "Are you sure want to update the details?"
+      "Are you sure you want to update the details?"
     );
     if (confirmed) {
-      e.preventDefault();
       try {
         const response = await axios.put(
           `http://localhost:8080/update-user/${username}`,
@@ -47,7 +65,6 @@ const UpdateUser = () => {
             phone,
             address,
           },
-
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -69,10 +86,10 @@ const UpdateUser = () => {
     <>
       <MainNavbar />
       <UserNavbar />
-
       <div className="update-user-form-container">
         <PageHeading heading="Update User" />
         <form className="update-user-form" onSubmit={handleSubmit}>
+          {errorMessage && <p className="text-danger">{errorMessage}</p>}
           <div>
             <label htmlFor="username">Username:</label>
             <input

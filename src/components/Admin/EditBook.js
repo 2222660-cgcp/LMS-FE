@@ -19,13 +19,13 @@ const EditBook = () => {
   const [bookPrice, setBookPrice] = useState("");
   const [authorId, setAuthorId] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [initialBookDetails, setInitialBookDetails] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
-  const [isSuccess, setIsSeccess] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
   const [showCard, setShowCard] = useState(false);
   const [authorData, setAuthorData] = useState("");
   const [categoryData, setCategoryData] = useState("");
-
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -36,12 +36,16 @@ const EditBook = () => {
         },
       })
         .then((response) => response.json())
+
         .then((data) => {
           setCategoryData(data);
+
           console.log(categoryData);
         })
+
         .catch((error) => {
           console.error("Error in category data:", error);
+
           setMessage("Category doesn't exist");
         });
     }
@@ -55,12 +59,16 @@ const EditBook = () => {
         },
       })
         .then((response) => response.json())
+
         .then((data) => {
           setAuthorData(data);
+
           console.log(authorData);
         })
+
         .catch((error) => {
           console.error("Error in author data:", error);
+
           setMessage("Author doesn't exist");
         });
     }
@@ -74,46 +82,58 @@ const EditBook = () => {
         },
       })
         .then((response) => response.json())
+
         .then((book) => {
           setBookName(book.bookName);
           setAuthorId(book.authorId);
           setBookNo(book.bookNo);
           setCategoryId(book.categoryId);
           setBookPrice(book.bookPrice);
+          setInitialBookDetails(book);
           console.log("book : ", book);
         })
+
         .catch((error) => {
-          console.error("Error fetching customer data:", error);
+          console.error("Error fetching book data:", error);
         });
     }
   }, [bookid, token]);
 
   const handleEditBook = async (e) => {
     e.preventDefault();
-    setIsSeccess(null);
+    setIsSuccess(null);
     setMessage("");
     setShowCard(false);
-    const editBookInput = {
-      bookName: bookName,
-      bookNo: bookNo,
-      bookPrice: bookPrice,
-      authorId: authorId,
-      categoryId: categoryId,
-    };
-    console.log("new book ", editBookInput);
+
     if (
-      (bookName === "") |
-      (bookNo === "") |
-      (bookPrice === "") |
-      (authorId === "") |
-      (categoryId === "")
+      bookName === "" ||
+      bookNo === "" ||
+      bookPrice === "" ||
+      authorId === "" ||
+      categoryId === ""
     ) {
-      setErrorMessage("All fileds are required");
+      setErrorMessage("All fields are required");
+    } else if (
+      bookName === initialBookDetails.bookName &&
+      bookNo === initialBookDetails.bookNo &&
+      bookPrice === initialBookDetails.bookPrice &&
+      authorId === initialBookDetails.authorId &&
+      categoryId === initialBookDetails.categoryId
+    ) {
+      setErrorMessage("No changes detected");
     } else if (message === "Author doesn't exist") {
       setErrorMessage("Author doesn't exist");
     } else if (message === "Category doesn't exist") {
       setErrorMessage("Category doesn't exist");
     } else {
+      const editBookInput = {
+        bookName: bookName,
+        bookNo: bookNo,
+        bookPrice: bookPrice,
+        authorId: authorId,
+        categoryId: categoryId,
+      };
+      console.log("new book ", editBookInput);
       try {
         if (token) {
           const response = await axios.put(
@@ -126,27 +146,24 @@ const EditBook = () => {
             }
           );
           console.log("Book updated", response.data);
-          setBookName(bookName);
-          setBookNo(bookNo);
-          setBookPrice(bookPrice);
-          setAuthorId(authorId);
-          setCategoryId(categoryId);
-          setIsSeccess(true);
-          setMessage("Book updated successfuly");
+          setIsSuccess(true);
+          setMessage("Book updated successfully");
         }
       } catch (error) {
-        console.error("error adding book", error);
-        setErrorMessage("error ! try again");
-        setIsSeccess(false);
-        setMessage("Failed to add book");
+        console.error("error updating book", error);
+        setErrorMessage("Error! Try again");
+        setIsSuccess(false);
+        setMessage("Failed to update book");
       } finally {
         setShowCard(true);
       }
     }
   };
+
   const handleInputChange = () => {
     setErrorMessage("");
   };
+
   const handleClose = () => {
     setShowCard(false);
     navigate("/admin-dashboard/manage-book");

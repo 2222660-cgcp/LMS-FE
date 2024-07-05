@@ -15,8 +15,9 @@ const EditAuthor = () => {
   const navigate = useNavigate();
   const authorid = location.state && location.state.authorId;
   const [authorName, setAuthorName] = useState("");
+  const [initialAuthorName, setInitialAuthorName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isSuccess, setIsSeccess] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
   const [message, setMessage] = useState("");
   const [showCard, setShowCard] = useState(false);
   const token = localStorage.getItem("token");
@@ -31,6 +32,7 @@ const EditAuthor = () => {
         .then((response) => response.json())
         .then((author) => {
           setAuthorName(author.authorName);
+          setInitialAuthorName(author.authorName);
           console.log("author : ", author);
         })
         .catch((error) => {
@@ -39,18 +41,21 @@ const EditAuthor = () => {
     }
   }, [authorid, token]);
 
-  const handleAddAuthor = async (e) => {
+  const handleEditAuthor = async (e) => {
     e.preventDefault();
-    setIsSeccess(null);
+    setIsSuccess(null);
     setMessage("");
     setShowCard(false);
-    const authorData = {
-      authorName: authorName,
-    };
-    console.log(authorData);
+
     if (authorName === "") {
       setErrorMessage("All fields are required");
+    } else if (authorName === initialAuthorName) {
+      setErrorMessage("No changes detected");
     } else {
+      const authorData = {
+        authorName: authorName,
+      };
+      console.log(authorData);
       try {
         if (token) {
           const response = await axios.put(
@@ -63,15 +68,14 @@ const EditAuthor = () => {
             }
           );
           console.log("author updated", response.data);
-          setAuthorName(authorName);
-          setIsSeccess(true);
+          setIsSuccess(true);
           setMessage("Author updated successfully");
         }
       } catch (error) {
-        console.error("error adding author", error);
-        setErrorMessage("error ! try again");
-        setIsSeccess(false);
-        setMessage("Failed to add author");
+        console.error("error updating author", error);
+        setErrorMessage("Error! Try again");
+        setIsSuccess(false);
+        setMessage("Failed to update author");
       } finally {
         setShowCard(true);
       }
@@ -134,7 +138,7 @@ const EditAuthor = () => {
                     </div>
                   </div>
                   <button
-                    onClick={handleAddAuthor}
+                    onClick={handleEditAuthor}
                     type="submit"
                     className="btn btn-primary mt-3"
                   >

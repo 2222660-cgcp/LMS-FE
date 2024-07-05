@@ -1,4 +1,3 @@
-import "./AdminNavbar.css";
 import MainNavbar from "./MainNavbar";
 import SubNavbar from "./SubNavbar";
 

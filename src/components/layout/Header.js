@@ -17,6 +17,9 @@ const Header = () => {
         <h1>Library Management</h1>
       </div>
       <nav className="homepage-nav">
+        <Link to="/" className="link-decor signup-link">
+          Home
+        </Link>
         <Link to="/signup" className="link-decor signup-link">
           Sign Up
         </Link>

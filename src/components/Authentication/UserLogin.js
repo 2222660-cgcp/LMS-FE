@@ -2,6 +2,9 @@ import "./UserLogin.css";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
+import Header from "../layout/Header";
+
+// ------------------IBRAHIM BADSHAH------------------------------
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ const UserLogin = () => {
 
           if (response.data.role === "USER") {
             navigate("/user-dashboard");
+            localStorage.setItem("authenticated", true);
             window.location.reload();
           } else {
             setErrorMessage(
@@ -53,8 +57,9 @@ const UserLogin = () => {
 
   return (
     <>
+      <Header />
       <div className="container py-5 h-100">
-        <div className="row d-flex align-items-center justify-content-center h-100">
+        <div className="row d-flex align-items-center justify-content-flex-start mt-3 h-100">
           <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
             <form>
               <div className="text-center">
@@ -101,17 +106,6 @@ const UserLogin = () => {
                 >
                   Login
                 </button>
-
-                <div className="container text-center">
-                  <div className="mt-3">
-                    <Link
-                      className="text-decoration-none text-primary"
-                      to="/signup"
-                    >
-                      Signup
-                    </Link>
-                  </div>
-                </div>
               </div>
             </form>
           </div>

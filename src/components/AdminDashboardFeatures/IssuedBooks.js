@@ -1,8 +1,10 @@
 import "./IssuedBooks.css";
 import { useEffect } from "react";
 import { useState } from "react";
-import AdminNavbar from "../Admin/AdminNavbar";
-import PageHeading from "../Admin/PageHeading";
+import AdminNavbar from "../layout/AdminNavbar";
+import PageHeading from "../layout/PageHeading";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const IssuedBooks = () => {
   const token = localStorage.getItem("token");

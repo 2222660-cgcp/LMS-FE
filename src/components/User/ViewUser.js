@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import "./UserNavbar.css";
-import PageHeading from "../Admin/PageHeading";
-import MainNavbar from "../Admin/MainNavbar";
-import UserNavbar from "./UserNavbar";
+import PageHeading from "../layout/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+import UserNavbar from "../layout/UserNavbar";
 import UserContext from "./UserContext";
 import "./ViewUser.css";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const ViewUser = () => {
   const { user, setUser } = useContext(UserContext);

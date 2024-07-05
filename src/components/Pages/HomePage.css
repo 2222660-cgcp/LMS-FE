@@ -1,0 +1,131 @@
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.homepage-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(248, 249, 250, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-logo h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.homepage-nav {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.homepage-link {
+  text-decoration: none;
+
+  color: black;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.homepage-login-dropdown {
+  position: relative;
+}
+
+.homepage-dropdown-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.homepage-dropdown-link {
+  padding: 10px 20px;
+  text-decoration: none;
+
+  color: black;
+  white-space: nowrap;
+}
+
+.homepage-dropdown-link:hover {
+  background-color: #f8f9fa;
+}
+
+.homepage-main {
+  text-align: center;
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.homepage-main h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.homepage-main p {
+  font-size: 18px;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .homepage-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .homepage-nav {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .homepage-main h2 {
+    font-size: 24px;
+  }
+
+  .homepage-main p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage-header {
+    padding: 10px;
+  }
+
+  .homepage-logo h1 {
+    font-size: 20px;
+  }
+
+  .homepage-link {
+    font-size: 14px;
+  }
+
+  .homepage-main h2 {
+    font-size: 20px;
+  }
+
+  .homepage-main p {
+    font-size: 14px;
+  }
+}

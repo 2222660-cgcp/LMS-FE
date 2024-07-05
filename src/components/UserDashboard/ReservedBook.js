@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import PageHeading from "../Admin/PageHeading";
-import MainNavbar from "../Admin/MainNavbar";
-import UserNavbar from "../User/UserNavbar";
+import PageHeading from "../layout/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+import UserNavbar from "../layout/UserNavbar";
 import "./ReservedBook.css";
 import moment from "moment";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const ReservedBook = () => {
   const [message, setMessage] = useState("");

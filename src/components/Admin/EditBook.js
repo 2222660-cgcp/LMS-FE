@@ -1,12 +1,14 @@
 import { useState } from "react";
 import "./EditBook.css";
-import PageHeading from "./PageHeading";
-import AdminNavbar from "./AdminNavbar";
+import PageHeading from "../layout/PageHeading";
+import AdminNavbar from "../layout/AdminNavbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import SuccessCard from "../SuccessCard";
-import FailureCard from "../FailureCard";
+import SuccessCard from "../common/SuccessCard";
+import FailureCard from "../common/FailureCard";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const EditBook = () => {
   const location = useLocation();

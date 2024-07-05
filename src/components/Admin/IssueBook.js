@@ -1,8 +1,10 @@
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../layout/AdminNavbar";
 import "./IssueBook.css";
 import { useState } from "react";
-import PageHeading from "./PageHeading";
+import PageHeading from "../layout/PageHeading";
 import axios from "axios";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const IssueBook = () => {
   const [bookName, setBookName] = useState("");

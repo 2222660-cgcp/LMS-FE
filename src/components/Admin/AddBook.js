@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import "./AddBook.css";
-import AdminNavbar from "./AdminNavbar";
-import PageHeading from "./PageHeading";
+import AdminNavbar from "../layout/AdminNavbar";
+import PageHeading from "../layout/PageHeading";
 import axios from "axios";
-import SuccessCard from "../SuccessCard";
-import FailureCard from "../FailureCard";
+import SuccessCard from "../common/SuccessCard";
+import FailureCard from "../common/FailureCard";
 import React from "react";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const AddBook = () => {
   const [bookName, setBookName] = useState("");

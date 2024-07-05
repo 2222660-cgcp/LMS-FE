@@ -1,11 +1,13 @@
 import "./Feedback.css";
-import MainNavbar from "../Admin/MainNavbar";
-import UserNavbar from "../User/UserNavbar";
-import PageHeading from "../Admin/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+import UserNavbar from "../layout/UserNavbar";
+import PageHeading from "../layout/PageHeading";
 import { useState } from "react";
 import axios from "axios";
 import "./Feedback.css";
 import { useNavigate } from "react-router-dom";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const Feedback = () => {
   const [comment, setComment] = useState("");
@@ -21,7 +23,7 @@ const Feedback = () => {
     e.preventDefault();
     const feedback = { comment: comment, username: username };
     axios
-      .post(`http://localhost:9095/feedback`, feedback, {
+      .post(`http://localhost:9096/feedback`, feedback, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -1,12 +1,14 @@
 import React from "react";
-import "./SuccessCard.css";
+import "./FailureCard.css";
 
-const SuccessCard = ({ message, onClose }) => {
+// --------------------------ANAGHA.S.R--------------------------------
+
+const FailureCard = ({ message, onClose }) => {
   return (
     <>
       <div className="overlay">
-        <div className="card success-card">
-          <h3>Success</h3>
+        <div className="card failure-card">
+          <h3>Failure</h3>
           <p>{message}</p>
           <button className="close-button" onClick={onClose}>
             close
@@ -17,4 +19,4 @@ const SuccessCard = ({ message, onClose }) => {
   );
 };
 
-export default SuccessCard;
+export default FailureCard;

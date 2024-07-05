@@ -1,21 +1,25 @@
 import "./AvailableBooksUser.css";
 import axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
-import UserNavbar from "../User/UserNavbar";
-import PageHeading from "../Admin/PageHeading";
-import MainNavbar from "../Admin/MainNavbar";
-import DataNotFound from "../Admin/DataNotFound";
+import { useState, useEffect } from "react";
+import UserNavbar from "../layout/UserNavbar";
+import PageHeading from "../layout/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const AvailableBooksUser = () => {
-  const [datas, setData] = useState([]);
+  const [datas, setDatas] = useState([]);
   const token = localStorage.getItem("token");
   const [bookName, setBookName] = useState("");
-  const [searchedBook, setSearchedBook] = useState([]);
+  const [searchedBooks, setSearchedBooks] = useState([]);
   const [showAllBooks, setShowAllBooks] = useState(true);
-  const [showFilteredBook, setShowFilteredBook] = useState(false);
+  const [showFilteredBooks, setShowFilteredBooks] = useState(false);
 
   useEffect(() => {
+    fetchAvailableBooks();
+  }, []);
+
+  const fetchAvailableBooks = () => {
     fetch("http://localhost:8081/book/available-books", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,59 +27,53 @@ const AvailableBooksUser = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setData(data);
+        setDatas(data);
         console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching customer data:", error);
       });
-  }, []);
+  };
 
-  const searchBookHandler = async (e) => {
-    e.preventDefault();
-    try {
-      if (token) {
-        const apiUrl = `http://localhost:8081/book/viewBookSearch/${bookName}`;
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setShowFilteredBook(true);
-        setShowAllBooks(false);
-        const responseData = response.data;
-        console.log(responseData);
-        setSearchedBook(responseData);
-      }
-    } catch (error) {
-      setShowFilteredBook(false);
+  const searchBooks = (value) => {
+    if (value.trim() === "") {
+      setSearchedBooks([]);
+      setShowAllBooks(true);
+      setShowFilteredBooks(false);
+    } else {
+      const filteredBooks = datas.filter((book) =>
+        book.bookName.toLowerCase().includes(value.toLowerCase())
+      );
+      setSearchedBooks(filteredBooks);
       setShowAllBooks(false);
-      console.error("Error:", error);
-      console.log("Book not found");
+      setShowFilteredBooks(true);
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setBookName(value);
+    searchBooks(value);
   };
 
   const handleReserve = async (bookId) => {
     const confirmed = window.confirm("Are you sure want to reserve this book?");
     if (confirmed) {
       try {
-        if (token) {
-          console.log(bookId);
-          console.log(token);
-          const response = await axios.post(
-            `http://localhost:9095/books/reserve/${bookId}`,
-            null,
-            {
-              headers: {
-                Authorization: token,
-              },
-            }
-          );
-          console.log("reserved");
-          window.location.reload();
-        }
+        const response = await axios.post(
+          `http://localhost:9095/books/reserve/${bookId}`,
+          null,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        console.log("Book reserved successfully.");
+        window.location.reload();
+        fetchAvailableBooks();
       } catch (error) {
-        console.log("error");
+        console.error("Error reserving book:", error);
       }
     }
   };
@@ -88,7 +86,7 @@ const AvailableBooksUser = () => {
         <PageHeading heading="Books" />
         <div className="container mt-2">
           <div className="row mb-3">
-            <div className="col-md-6 offset-md-3 ">
+            <div className="col-md-6 offset-md-3">
               <div className="input-group">
                 <input
                   type="search"
@@ -96,27 +94,17 @@ const AvailableBooksUser = () => {
                   id="bookName"
                   name="bookName"
                   placeholder="Enter Book Name"
-                  required
-                  onChange={(e) => setBookName(e.target.value)}
+                  value={bookName}
+                  onChange={handleInputChange}
                 />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    onClick={searchBookHandler}
-                  >
-                    Search{" "}
-                  </button>
-                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {!showFilteredBook && !showAllBooks && <DataNotFound data="Book" />}
-
         <div className="table-responsive">
           <table className="table table-bordered table-striped text-center">
-            {(showFilteredBook || showAllBooks) && (
+            {(showFilteredBooks || showAllBooks) && (
               <thead className="thead-dark ">
                 <tr className="table-head">
                   <th
@@ -152,41 +140,14 @@ const AvailableBooksUser = () => {
                 </tr>
               </thead>
             )}
-            {showFilteredBook && (
-              <tbody className="table-data">
-                <tr className="table-data">
-                  <td className="table-data">{searchedBook.bookName}</td>
-                  <td className="table-data">{searchedBook.bookNo}</td>
-                  <td className="table-data">{searchedBook.authorName}</td>
-                  <td className="table-data">{searchedBook.categoryName}</td>
-
-                  <td>
-                    {searchedBook.reserved ? (
-                      "Reserved"
-                    ) : (
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          handleReserve(searchedBook.bookId);
-                        }}
-                      >
-                        Reserve
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            )}
-
-            {showAllBooks && (
-              <tbody className="table-data">
-                {datas.map((book) => (
-                  <tr key={book.bookId} className="table-data">
-                    <td className="table-data">{book.bookName}</td>
-                    <td className="table-data">{book.bookNo}</td>
-                    <td className="table-data">{book.authorName}</td>
-                    <td className="table-data">{book.categoryName}</td>
-
+            <tbody>
+              {showFilteredBooks &&
+                searchedBooks.map((book) => (
+                  <tr key={book.bookId}>
+                    <td>{book.bookName}</td>
+                    <td>{book.bookNo}</td>
+                    <td>{book.authorName}</td>
+                    <td>{book.categoryName}</td>
                     <td>
                       {book.reserved ? (
                         "Reserved"
@@ -203,8 +164,30 @@ const AvailableBooksUser = () => {
                     </td>
                   </tr>
                 ))}
-              </tbody>
-            )}
+              {showAllBooks &&
+                datas.map((book) => (
+                  <tr key={book.bookId}>
+                    <td>{book.bookName}</td>
+                    <td>{book.bookNo}</td>
+                    <td>{book.authorName}</td>
+                    <td>{book.categoryName}</td>
+                    <td>
+                      {book.reserved ? (
+                        "Reserved"
+                      ) : (
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => {
+                            handleReserve(book.bookId);
+                          }}
+                        >
+                          Reserve
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
           </table>
         </div>
       </div>

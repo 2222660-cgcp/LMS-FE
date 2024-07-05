@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import PageHeading from "../Admin/PageHeading";
-import MainNavbar from "../Admin/MainNavbar";
-import UserNavbar from "./UserNavbar";
+import PageHeading from "../layout/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+import UserNavbar from "../layout/UserNavbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
 import "./UpdateUser.css";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const UpdateUser = () => {
   const { user, setUser } = useContext(UserContext);

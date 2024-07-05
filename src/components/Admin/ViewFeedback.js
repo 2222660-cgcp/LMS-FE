@@ -1,8 +1,10 @@
-import AdminNavbar from "./AdminNavbar";
-import PageHeading from "./PageHeading";
+import AdminNavbar from "../layout/AdminNavbar";
+import PageHeading from "../layout/PageHeading";
 import "./ViewFeedback.css";
 import { useState } from "react";
 import { useEffect } from "react";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const ViewFeedback = () => {
   const [datas, setData] = useState([]);
@@ -10,7 +12,7 @@ const ViewFeedback = () => {
 
   useEffect(() => {
     if (token) {
-      fetch("http://localhost:9095/feedback", {
+      fetch("http://localhost:9096/feedback", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

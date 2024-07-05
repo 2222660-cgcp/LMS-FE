@@ -1,10 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Signup from "./Authentication/Signup";
-import UserLogin from "./Authentication/UserLogin";
-import AdminLogin from "./Authentication/AdminLogin";
 import Logout from "./Authentication/Logout";
-import AdminDashboard from "./Admin/AdminDashboard";
+import AdminDashboard from "./layout/AdminDashboard";
 import RegisteredUsers from "./AdminDashboardFeatures/RegisteredUsers";
 import AvailableBooks from "./AdminDashboardFeatures/AvailableBooks";
 import BooksCategories from "./AdminDashboardFeatures/BooksCategories";
@@ -22,7 +20,7 @@ import ManageAuthor from "./Admin/ManageAuthor";
 import EditAuthor from "./Admin/EditAuthor";
 import ViewFeedback from "./Admin/ViewFeedback";
 import IssueBook from "./Admin/IssueBook";
-import UserDashboard from "./User/UserDashboard";
+import UserDashboard from "./layout/UserDashboard";
 import ViewUser from "./User/ViewUser";
 import UpdateUser from "./User/UpdateUser";
 import ChangePassword from "./User/ChangePassword";
@@ -33,14 +31,23 @@ import { useEffect } from "react";
 import TokenService from "./Authentication/TokenService";
 import SessionExpired from "./Authentication/SessionExpired";
 import Feedback from "./UserDashboard/Feedback";
+import HomePage from "./Pages/HomePage";
+import SignupPage from "./Pages/SignupPage";
+import UserLoginPage from "./Pages/UserLoginPage";
+import AdminLoginPage from "./Pages/AdminLoginPage";
 
 const MainRoutes = () => {
   const { isSessionExpired, setSessionExpired } = useSession();
+  const authenticated = JSON.parse(localStorage.getItem("authenticated"));
 
   useEffect(() => {
     const checkToken = () => {
-      if (TokenService()) {
+      if (TokenService() && authenticated) {
+        console.log("authenticated", authenticated);
+        console.log("TokenService()", TokenService());
         setSessionExpired(true);
+      } else {
+        setSessionExpired(false);
       }
     };
     const interval = setInterval(checkToken, 60000);
@@ -52,9 +59,10 @@ const MainRoutes = () => {
       {isSessionExpired && <SessionExpired />}
 
       <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<UserLogin />} />
-        <Route path="admin-login" element={<AdminLogin />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<UserLoginPage />} />
+        <Route path="admin-login" element={<AdminLoginPage />} />
         <Route path="/logout" element={<Logout />} />
 
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

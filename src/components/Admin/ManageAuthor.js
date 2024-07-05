@@ -1,11 +1,13 @@
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../layout/AdminNavbar";
 import "./ManageAuthor.css";
-import PageHeading from "./PageHeading";
+import PageHeading from "../layout/PageHeading";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import DataNotFound from "./DataNotFound";
+import SearchInput from "../common/SearchInput";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const ManageAuthor = () => {
   const [datas, setData] = useState([]);
@@ -17,44 +19,38 @@ const ManageAuthor = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token) {
-      fetch("http://localhost:8083/author", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching author data:", error);
-        });
-    }
-  }, [token]);
+    searchAuthorHandler();
+  }, []);
 
-  const searchAuthorHandler = async (e) => {
-    e.preventDefault();
-    try {
-      if (token) {
-        const apiUrl = `http://localhost:8083/author/view-author/${authorName}`;
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setShowFilteredAuthor(true);
-        setShowAllAuthors(false);
-        const responseData = response.data;
-        console.log(responseData);
-        setSearchedAuthor(responseData);
-      }
-    } catch (error) {
+  const searchAuthorHandler = () => {
+    fetch("http://localhost:8083/author", {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const searchAuthor = (value) => {
+    if (value.trim() === "") {
+      setSearchedAuthor([]);
+      setShowAllAuthors(true);
       setShowFilteredAuthor(false);
+    } else {
+      const filteredAuthor = datas.filter((author) =>
+        author.authorName.toLowerCase().includes(value.toLowerCase())
+      );
+      console.log(filteredAuthor);
+      setSearchedAuthor(filteredAuthor);
       setShowAllAuthors(false);
-      console.error("Error:", error);
-      console.log("Author not found");
+      setShowFilteredAuthor(true);
     }
   };
 
@@ -89,40 +85,22 @@ const ManageAuthor = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setAuthorName(value);
+    searchAuthor(value);
+  };
+
   return (
     <>
       <AdminNavbar />
       <div className="mngauthor-body-bg">
         <PageHeading heading="Manage Author" />
-        <div className="container mt-2">
-          <div className="row mb-3">
-            <div className="col-md-6 offset-md-3 ">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="authorName"
-                  name="authorName"
-                  placeholder="Enter Author Name"
-                  required
-                  onChange={(e) => setAuthorName(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    onClick={searchAuthorHandler}
-                  >
-                    Search{" "}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {!showFilteredAuthor && !showAllAuthors && (
-          <DataNotFound data="Author" />
-        )}
+        <SearchInput
+          placeholder={"Search by Author Name"}
+          value={authorName}
+          onChange={handleInputChange}
+        />
 
         <div className="table-responsive">
           <table className="table table-bordered table-striped text-center">
@@ -144,53 +122,54 @@ const ManageAuthor = () => {
                 </tr>
               </thead>
             )}
-            {showFilteredAuthor && (
-              <tbody className="table-data">
-                <tr className="table-data">
-                  <td className="table-data">{searchedAuthor.authorName}</td>
-                  <td>
-                    <button
-                      className="btn btn-warning btn-sm btn-spacing"
-                      onClick={() => {
-                        editAuthorHandler(searchedAuthor.authorId);
-                      }}
-                    >
-                      <i className="fas fa-edit"></i>Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm "
-                      onClick={() => {
-                        deleteAuthorHandler(searchedAuthor.authorId);
-                      }}
-                    >
-                      delete
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            )}
+            {showFilteredAuthor &&
+              searchedAuthor.map((author) => (
+                <tbody className="table-data">
+                  <tr key={author.authorId} className="table-data">
+                    <td className="table-data">{author.authorName}</td>
+                    <td className="table-data ">
+                      <button
+                        className="btn btn-sm btn-spacing"
+                        onClick={() => {
+                          editAuthorHandler(author.authorId);
+                        }}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        className="btn btn-sm "
+                        onClick={() => {
+                          deleteAuthorHandler(author.authorId);
+                        }}
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
 
             {showAllAuthors && (
               <tbody className="table-data">
                 {datas.map((author) => (
                   <tr key={author.authorId} className="table-data">
                     <td className="table-data">{author.authorName}</td>
-                    <td>
+                    <td className="table-data ">
                       <button
-                        className="btn btn-warning btn-sm btn-spacing"
+                        className="btn btn-sm btn-spacing"
                         onClick={() => {
                           editAuthorHandler(author.authorId);
                         }}
                       >
-                        <i className="fas fa-edit"></i>Edit
+                        <i className="fas fa-edit"></i>
                       </button>
                       <button
-                        className="btn btn-danger btn-sm "
+                        className="btn btn-sm "
                         onClick={() => {
                           deleteAuthorHandler(author.authorId);
                         }}
                       >
-                        delete
+                        <i className="fas fa-trash-alt"></i>
                       </button>
                     </td>
                   </tr>

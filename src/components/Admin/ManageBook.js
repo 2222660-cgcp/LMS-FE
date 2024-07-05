@@ -1,11 +1,13 @@
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../layout/AdminNavbar";
 import "./ManageBook.css";
-import PageHeading from "./PageHeading";
+import PageHeading from "../layout/PageHeading";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import DataNotFound from "./DataNotFound";
+import SearchInput from "../common/SearchInput";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const ManageBook = () => {
   const [datas, setData] = useState([]);
@@ -17,44 +19,37 @@ const ManageBook = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token) {
-      fetch("http://localhost:8081/book", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching book data:", error);
-        });
-    }
-  }, [token]);
+    searchBookHandler();
+  }, []);
 
-  const searchBookHandler = async (e) => {
-    e.preventDefault();
-    try {
-      if (token) {
-        const apiUrl = `http://localhost:8081/book/viewBook/${bookName}`;
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setShowFilteredBook(true);
-        setShowAllBooks(false);
-        const responseData = response.data;
-        console.log(responseData);
-        setSearchedBook(responseData);
-      }
-    } catch (error) {
+  const searchBookHandler = () => {
+    fetch("http://localhost:8081/book", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching customer data:", error);
+      });
+  };
+
+  const searchBooks = (value) => {
+    if (value.trim() === "") {
+      setSearchedBook([]);
+      setShowAllBooks(true);
       setShowFilteredBook(false);
+    } else {
+      const filteredBooks = datas.filter((book) =>
+        book.bookName.toLowerCase().includes(value.toLowerCase())
+      );
+      setSearchedBook(filteredBooks);
       setShowAllBooks(false);
-      console.error("Error:", error);
-      console.log("Book not found");
+      setShowFilteredBook(true);
     }
   };
 
@@ -84,37 +79,23 @@ const ManageBook = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setBookName(value);
+    searchBooks(value);
+  };
+
   return (
     <>
       <AdminNavbar />
       <div className="mngbook-body-bg">
         <PageHeading heading="Manage Book" />
-        <div className="container mt-2">
-          <div className="row mb-3">
-            <div className="col-md-6 offset-md-3 ">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  id="bookName"
-                  name="bookName"
-                  placeholder="Enter Book Name"
-                  required
-                  onChange={(e) => setBookName(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    onClick={searchBookHandler}
-                  >
-                    Search{" "}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {!showFilteredBook && !showAllBooks && <DataNotFound data="Book" />}
+        <SearchInput
+          placeholder={"Search by Book Name"}
+          value={bookName}
+          onChange={handleInputChange}
+        />
+
         <div className="table-responsive">
           <table className="table table-bordered table-striped text-center">
             {(showFilteredBook || showAllBooks) && (
@@ -153,33 +134,34 @@ const ManageBook = () => {
                 </tr>
               </thead>
             )}
-            {showFilteredBook && (
-              <tbody className="table-data">
-                <tr className="table-data">
-                  <td className="table-data">{searchedBook.bookName}</td>
-                  <td className="table-data">{searchedBook.bookNo}</td>
-                  <td className="table-data">{searchedBook.authorId}</td>
-                  <td className="table-data">
-                    <span>₹</span>
-                    {searchedBook.bookPrice}
-                  </td>
-                  <td className="table-data ">
-                    <button
-                      className="btn btn-warning btn-sm btn-spacing"
-                      onClick={() => editBookHandler(searchedBook.bookId)}
-                    >
-                      <i className="fas fa-edit"></i>Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm "
-                      onClick={() => deleteBookHandler(searchedBook.bookId)}
-                    >
-                      delete
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            )}
+            {showFilteredBook &&
+              searchedBook.map((book) => (
+                <tbody className="table-data">
+                  <tr key={book.bookId} className="table-data">
+                    <td className="table-data">{book.bookName}</td>
+                    <td className="table-data">{book.bookNo}</td>
+                    <td className="table-data">{book.authorId}</td>
+                    <td className="table-data">
+                      <span>₹</span>
+                      {book.bookPrice}
+                    </td>
+                    <td className="table-data ">
+                      <button
+                        className="btn btn-sm btn-spacing"
+                        onClick={() => editBookHandler(book.bookId)}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        className="btn btn-sm "
+                        onClick={() => deleteBookHandler(book.bookId)}
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
 
             {showAllBooks && (
               <tbody className="table-data">
@@ -194,16 +176,16 @@ const ManageBook = () => {
                     </td>
                     <td className="table-data ">
                       <button
-                        className="btn btn-warning btn-sm btn-spacing"
+                        className="btn btn-sm btn-spacing"
                         onClick={() => editBookHandler(book.bookId)}
                       >
-                        <i className="fas fa-edit"></i>Edit
+                        <i className="fas fa-edit"></i>
                       </button>
                       <button
-                        className="btn btn-danger btn-sm "
+                        className="btn btn-sm "
                         onClick={() => deleteBookHandler(book.bookId)}
                       >
-                        delete
+                        <i className="fas fa-trash-alt"></i>
                       </button>
                     </td>
                   </tr>

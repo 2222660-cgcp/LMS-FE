@@ -1,58 +1,56 @@
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../layout/AdminNavbar";
 import "./ManageCategory.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import PageHeading from "./PageHeading";
+import PageHeading from "../layout/PageHeading";
 import { useNavigate } from "react-router-dom";
-import DataNotFound from "./DataNotFound";
+import SearchInput from "../common/SearchInput";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const ManageCategory = () => {
   const [datas, setData] = useState([]);
-  const [categoryName, setCateoryName] = useState("");
-  const [searchedCategory, srtSearchedCategory] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const [searchedCategory, setSearchedCategory] = useState([]);
   const [showAllCategory, setShowAllCategory] = useState(true);
   const [showFilteredCategory, setShowFilteredCategory] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token) {
-      fetch("http://localhost:8082/category", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }
-  }, [token]);
+    searchCategoryHandler();
+  }, []);
 
-  const searchCategoryHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const apiUrl = `http://localhost:8082/category/view-category/${categoryName}`;
-      const response = await axios.get(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  const searchCategoryHandler = () => {
+    fetch("http://localhost:8082/category", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-      setShowFilteredCategory(true);
-      setShowAllCategory(false);
-      const responseData = response.data;
-      console.log(responseData);
-      srtSearchedCategory(responseData);
-    } catch (error) {
+  };
+
+  const searchCategory = (value) => {
+    if (value.trim() === "") {
+      setSearchedCategory([]);
+      setShowAllCategory(true);
       setShowFilteredCategory(false);
+    } else {
+      const filteredCategory = datas.filter((category) =>
+        category.categoryName.toLowerCase().includes(value.toLowerCase())
+      );
+      console.log(filteredCategory);
+      setSearchedCategory(filteredCategory);
       setShowAllCategory(false);
-      console.error("Error:", error);
-      console.log("Category not found");
+      setShowFilteredCategory(true);
     }
   };
 
@@ -87,40 +85,22 @@ const ManageCategory = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setCategoryName(value);
+    searchCategory(value);
+  };
+
   return (
     <>
       <AdminNavbar />
       <div className="mngcategory-body-bg">
         <PageHeading heading="Manage Category" />
-        <div className="container mt-2">
-          <div className="row mb-3">
-            <div className="col-md-6 offset-md-3 ">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="categoryName"
-                  name="categoryName"
-                  placeholder="Enter Category Name"
-                  required
-                  onChange={(e) => setCateoryName(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary"
-                    onClick={searchCategoryHandler}
-                  >
-                    Search{" "}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {!showFilteredCategory && !showAllCategory && (
-          <DataNotFound data="Category" />
-        )}
+        <SearchInput
+          placeholder={"Search by Category Name"}
+          value={categoryName}
+          onChange={handleInputChange}
+        />
 
         <div className="table-responsive">
           <table className="table table-bordered table-striped text-center">
@@ -142,55 +122,54 @@ const ManageCategory = () => {
                 </tr>
               </thead>
             )}
-            {showFilteredCategory && (
-              <tbody className="table-data">
-                <tr className="table-data">
-                  <td className="table-data">
-                    {searchedCategory.categoryName}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-warning btn-sm btn-spacing"
-                      onClick={() => {
-                        editCategoryHandler(searchedCategory.categoryId);
-                      }}
-                    >
-                      <i className="fas fa-edit"></i>Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm "
-                      onClick={() => {
-                        deleteCategoryHandler(searchedCategory.categoryId);
-                      }}
-                    >
-                      delete
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            )}
+            {showFilteredCategory &&
+              searchedCategory.map((category) => (
+                <tbody className="table-data">
+                  <tr key={category.categoryId} className="table-data">
+                    <td className="table-data">{category.categoryName}</td>
+                    <td className="table-data ">
+                      <button
+                        className="btn btn-sm btn-spacing"
+                        onClick={() => {
+                          editCategoryHandler(category.categoryId);
+                        }}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        className="btn btn-sm "
+                        onClick={() => {
+                          deleteCategoryHandler(category.categoryId);
+                        }}
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
 
             {showAllCategory && (
               <tbody className="table-data">
                 {datas.map((category) => (
                   <tr key={category.categoryId} className="table-data">
                     <td className="table-data">{category.categoryName}</td>
-                    <td>
+                    <td className="table-data ">
                       <button
-                        className="btn btn-warning btn-sm btn-spacing"
+                        className="btn btn-sm btn-spacing"
                         onClick={() => {
                           editCategoryHandler(category.categoryId);
                         }}
                       >
-                        <i className="fas fa-edit"></i>Edit
+                        <i className="fas fa-edit"></i>
                       </button>
                       <button
-                        className="btn btn-danger btn-sm "
+                        className="btn btn-sm "
                         onClick={() => {
                           deleteCategoryHandler(category.categoryId);
                         }}
                       >
-                        delete
+                        <i className="fas fa-trash-alt"></i>
                       </button>
                     </td>
                   </tr>

@@ -1,12 +1,14 @@
-import AdminNavbar from "./AdminNavbar";
+import AdminNavbar from "../layout/AdminNavbar";
 import "./EditAuthor.css";
-import PageHeading from "./PageHeading";
+import PageHeading from "../layout/PageHeading";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import SuccessCard from "../SuccessCard";
-import FailureCard from "../FailureCard";
+import SuccessCard from "../common/SuccessCard";
+import FailureCard from "../common/FailureCard";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const EditAuthor = () => {
   const location = useLocation();

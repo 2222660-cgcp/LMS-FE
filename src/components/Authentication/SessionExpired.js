@@ -3,6 +3,8 @@ import React from "react";
 import "./SessionExpired.css";
 import { useSession } from "./SessionContext";
 
+// --------------------------ANAGHA.S.R--------------------------------
+
 const SessionExpired = () => {
   const { setSessionExpired } = useSession();
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const SessionExpired = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("authenticated");
     navigate("/login");
   };
 

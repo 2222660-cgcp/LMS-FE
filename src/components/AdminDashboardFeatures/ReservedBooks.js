@@ -1,9 +1,11 @@
 import "./ReservedBooks.css";
-import AdminNavbar from "../Admin/AdminNavbar";
-import PageHeading from "../Admin/PageHeading";
+import AdminNavbar from "../layout/AdminNavbar";
+import PageHeading from "../layout/PageHeading";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+
+// --------------------------ANAGHA.S.R--------------------------------
 
 const ReservedBooks = () => {
   const [datas, setData] = useState([]);
@@ -104,7 +106,7 @@ const ReservedBooks = () => {
                           issueBookHandler(reservations.reservationId)
                         }
                       >
-                        <i className="fas fa-edit"></i>Issue Book
+                        <i className="fas fa-edit"></i> Issue Book
                       </button>
                     )}
                   </td>

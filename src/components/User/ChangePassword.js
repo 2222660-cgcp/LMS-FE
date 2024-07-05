@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import MainNavbar from "../Admin/MainNavbar";
-import UserNavbar from "./UserNavbar";
-import PageHeading from "../Admin/PageHeading";
+import MainNavbar from "../layout/MainNavbar";
+import UserNavbar from "../layout/UserNavbar";
+import PageHeading from "../layout/PageHeading";
 import UserContext from "./UserContext";
 import "./ChangePassword.css";
+
+// -------------------IBRAHIM BADSHAH-----------------------------------------
 
 const ChangePassword = () => {
   const { user } = useContext(UserContext);

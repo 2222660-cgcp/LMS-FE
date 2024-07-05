@@ -129,7 +129,7 @@ const ManageBook = () => {
                     className="table-head"
                     style={{ background: "#2c3e50", color: "white" }}
                   >
-                    Action
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -149,12 +149,14 @@ const ManageBook = () => {
                       <button
                         className="btn btn-sm btn-spacing"
                         onClick={() => editBookHandler(book.bookId)}
+                        title="Edit Book"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
                       <button
                         className="btn btn-sm "
                         onClick={() => deleteBookHandler(book.bookId)}
+                        title="Delete Book"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>
@@ -178,12 +180,14 @@ const ManageBook = () => {
                       <button
                         className="btn btn-sm btn-spacing"
                         onClick={() => editBookHandler(book.bookId)}
+                        title="Edit Book"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
                       <button
                         className="btn btn-sm "
                         onClick={() => deleteBookHandler(book.bookId)}
+                        title="Delete Book"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>

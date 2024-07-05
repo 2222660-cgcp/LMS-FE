@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Header from "../layout/Header";
 
-// --------------------------Anagha.S.R--------------------------------
+// --------------------------Ibrahim Badshah--------------------------------
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -42,22 +42,18 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     let valid = true;
-
     if (!username.trim()) {
       setUsernameError("Username is required");
       valid = false;
     }
-
     if (!firstname.trim()) {
       setFirstnameError("First Name is required");
       valid = false;
     }
-
     if (!lastname.trim()) {
       setLastnameError("Last Name is required");
       valid = false;
     }
-
     if (!email.trim()) {
       setEmailError("Email is required");
       valid = false;
@@ -65,7 +61,6 @@ const Signup = () => {
       setEmailError("Email is invalid");
       valid = false;
     }
-
     if (!phone.trim()) {
       setPhoneError("Phone Number is required");
       valid = false;
@@ -73,12 +68,10 @@ const Signup = () => {
       setPhoneError("Phone Number is invalid");
       valid = false;
     }
-
     if (!address.trim()) {
       setAddressError("Address is required");
       valid = false;
     }
-
     if (!password.trim()) {
       setPasswordError("Password is required");
       valid = false;
@@ -86,13 +79,10 @@ const Signup = () => {
       setPasswordError("Password must be at least 6 characters long");
       valid = false;
     }
-
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       valid = false;
-    }
-
-    if (valid) {
+    } else if (valid) {
       const signupRequest = {
         username: username,
         firstname: firstname,

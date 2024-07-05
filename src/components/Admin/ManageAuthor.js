@@ -117,7 +117,7 @@ const ManageAuthor = () => {
                     className="table-head"
                     style={{ background: "#2c3e50", color: "white" }}
                   >
-                    Action
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -133,6 +133,7 @@ const ManageAuthor = () => {
                         onClick={() => {
                           editAuthorHandler(author.authorId);
                         }}
+                        title="Edit Author"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -141,6 +142,7 @@ const ManageAuthor = () => {
                         onClick={() => {
                           deleteAuthorHandler(author.authorId);
                         }}
+                        title="Delete Author"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>
@@ -160,6 +162,7 @@ const ManageAuthor = () => {
                         onClick={() => {
                           editAuthorHandler(author.authorId);
                         }}
+                        title="Edit Author"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -168,6 +171,7 @@ const ManageAuthor = () => {
                         onClick={() => {
                           deleteAuthorHandler(author.authorId);
                         }}
+                        title="Delete Author"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>

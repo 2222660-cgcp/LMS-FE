@@ -117,7 +117,7 @@ const ManageCategory = () => {
                     className="table-head"
                     style={{ background: "#2c3e50", color: "white" }}
                   >
-                    Action
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -133,6 +133,7 @@ const ManageCategory = () => {
                         onClick={() => {
                           editCategoryHandler(category.categoryId);
                         }}
+                        title="Edit Category"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -141,6 +142,7 @@ const ManageCategory = () => {
                         onClick={() => {
                           deleteCategoryHandler(category.categoryId);
                         }}
+                        title="Delete Category"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>
@@ -160,6 +162,7 @@ const ManageCategory = () => {
                         onClick={() => {
                           editCategoryHandler(category.categoryId);
                         }}
+                        title="Edit Category"
                       >
                         <i className="fas fa-edit"></i>
                       </button>
@@ -168,6 +171,7 @@ const ManageCategory = () => {
                         onClick={() => {
                           deleteCategoryHandler(category.categoryId);
                         }}
+                        title="Delete Category"
                       >
                         <i className="fas fa-trash-alt"></i>
                       </button>

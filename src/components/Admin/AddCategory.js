@@ -79,8 +79,8 @@ const AddCategory = () => {
                     <div className="col-md-6">
                       <label className="form-label">Category Name</label>
                       <input
-                        type="text"
                         required
+                        type="text"
                         className="form-control "
                         placeholder="Enter Category Name"
                         value={categoryName}

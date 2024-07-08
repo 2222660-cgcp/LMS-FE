@@ -142,6 +142,9 @@ const Signup = () => {
                       handleInputChange();
                     }}
                   />
+                  {usernameError && (
+                    <p className="text-danger mt-3">{usernameError}</p>
+                  )}
                   {errorMessage && (
                     <p className="text-danger mt-3">
                       Username already exists. please choose different username
@@ -161,6 +164,9 @@ const Signup = () => {
                       handleInputChange();
                     }}
                   />
+                  {firstnameError && (
+                    <p className="text-danger mt-3">{firstnameError}</p>
+                  )}
                 </div>
               </div>
 
@@ -178,6 +184,9 @@ const Signup = () => {
                       handleInputChange();
                     }}
                   />
+                  {lastnameError && (
+                    <p className="text-danger mt-3">{lastnameError}</p>
+                  )}
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Email</label>
@@ -229,6 +238,9 @@ const Signup = () => {
                       handleInputChange();
                     }}
                   />
+                  {addressError && (
+                    <p className="text-danger mt-3">{addressError}</p>
+                  )}
                 </div>
               </div>
 
